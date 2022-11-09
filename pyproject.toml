@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "dynamic-programming-22"
+version = "0.1.0"
+description = "Repository containing scripts from the Dynamic Programming and Optimal Control 2022 course at ETH Zürich."
+authors = ["Juraj Zelman <zelman.juraj@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "dynamic_programming_22"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.23.4"
+pandas = "^1.5.1"
+matplotlib = "^3.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
