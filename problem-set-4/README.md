@@ -16,13 +16,27 @@ required for the blimp to move from an arbitrary initial state to a given landin
 
 1. For the state vector $s$ being defined as $$s = (x, \dot{x}, z, \dot{z}),$$ write down the Hamiltonian function of the above optimal control problem as the function of $s \in \mathbb{R}^4, p \in \mathbb{R}^4$ and $u \in \mathbb{R}^2$: $$H(s,p,u) = g(s,u) + p^Tf(s,u).$$
 
-2. Recall that the control $u^*$ that minimizes the above optimal control problem can be obtained by minimizing the Hamiltonian, i.e. $$u^\*(s,p) = \arg \min_u H(s, p, u).$$ Compute the optimal $u^*$ by setting the gradient of the Hamiltonian with respect to $u$ to zero, i.e. solve $$\frac{\partial H}{\partial u} (p, s, u^*) = 0$$ for $u^*= (u_1^*, u_2^*)$.
+2. Recall that the control $u^\ast$ that minimizes the above optimal control problem can be obtained by minimizing the Hamiltonian, i.e. $$u^\ast(s,p) = \arg \min_u H(s, p, u).$$ Compute the optimal $u^\ast$ by setting the gradient of the Hamiltonian with respect to $u$ to zero, i.e. solve $$\frac{\partial H}{\partial u} (p, s, u^\ast) = 0$$ for $u^\ast= (u_1^\ast, u_2^\ast)$.
 
-3. Write down the adjoint equations $$\dot{p}(t) = - \nabla_s H(s, p, u^*(s,p)).$$
+3. Write down the adjoint equations $$\dot{p}(t) = - \nabla_s H(s, p, u^\ast(s,p)).$$
 
 4. Collect the blimp state $s$ and the costate $p$ in a new vector $y = (s, p)$. The evolution of $y$
-is then described by the first-order differential equation $$y = \tilde{f}(y) = \begin{pmatrix} f(s, u^\*(s, p)) \\ - \nabla_s H(s, p, u^*(s,p))\end{pmatrix}.$$
-The boundary value problem (BVP) that needs to be solved is given by $$s(0) = s_0 = \begin{pmatrix} x_0 \\ \dot{x}_0 \\ z_0 \\ \dot{z}_0 \end{pmatrix},$$ $$s(T) = s_T = \begin{pmatrix} x_T \\ \dot{x}_T \\ z_T \\ \dot{z}_T \end{pmatrix},$$ $$y = \tilde{f}(y), \quad 0 \le t \le T.$$ There are no constraints on the adjoints. We will solve the BVP by single shooting and using _scipy.optimize.fmin_ in Python. The first step is to solve the initial value problem $$y(0) = y_0,$$ $$\dot{y}(t) = \tilde{f}(y(t)), \quad 0 \le t \le T.$$ Note that $y_0 = (s_0, p_0)$. As the initial value for the blimp state is fixed to $s_0$, we only need to find the correct initial value for the adjoints, $p_0$. Write a MATLAB or a Python function $F(p_0)$, using _scipy.integrate.solve_ivp_  in Python, that takes $p_0$ as an input and returns the final blimp state $s(T)$, $F: \mathbb{R}^4 \to \mathbb{R}^4$. Use the following numerical values:
+is then described by the first-order differential equation $$y = \tilde{f}(y) = \begin{pmatrix} f(s, u^\ast(s, p)) \\ - \nabla_s H(s, p, u^\ast(s,p))\end{pmatrix}.$$
+The boundary value problem (BVP) that needs to be solved is given by
+
+    $$s(0) = s_0 = \begin{pmatrix} x_0 \\ \dot{x}_0 \\ z_0 \\ \dot{z}_0 \end{pmatrix},$$
+
+    $$s(T) = s_T = \begin{pmatrix} x_T \\ \dot{x}_T \\ z_T \\ \dot{z}_T \end{pmatrix},$$
+
+    $$y = \tilde{f}(y), \quad 0 \le t \le T.$$
+
+    There are no constraints on the adjoints. We will solve the BVP by single shooting and using _scipy.optimize.fmin_ in Python. The first step is to solve the initial value problem
+
+    $$y(0) = y_0,$$
+
+    $$\dot{y}(t) = \tilde{f}(y(t)), \quad 0 \le t \le T.$$
+
+    Note that $y_0 = (s_0, p_0)$. As the initial value for the blimp state is fixed to $s_0$, we only need to find the correct initial value for the adjoints, $p_0$. Write a MATLAB or a Python function $F(p_0)$, using _scipy.integrate.solve_ivp_  in Python, that takes $p_0$ as an input and returns the final blimp state $s(T)$, $F: \mathbb{R}^4 \to \mathbb{R}^4$. Use the following numerical values:
 
     | <!-- -->    | <!-- -->    | <!-- -->    | <!-- -->    |
     |-------------|-------------|-------------|-------------|
@@ -33,4 +47,4 @@ The boundary value problem (BVP) that needs to be solved is given by $$s(0) = s_
     | Initial velocity $\dot{x}_0$      | 20 [km/h]  | Final velocity $\dot{x}_T$                 | 0 [km/h]  
     | Initial velocity $\dot{z}_0$      | 0 [km/h]   | Final velocity $\dot{z}_T$                 | 0 [km/h]  
 
-5. The solution of the BVP is found if we have found $p_0^*$ such that $F(p_0^*) = s_T$. Use _scipy.optimize.fmin_ in Python to find $p_0^*$ by minimizing $||F(p_0) - s_T||_2$. Plot the optimal control input and blimp trajectory and comment on the results.
+5. The solution of the BVP is found if we have found $p_0^\ast$ such that $F(p_0^\ast) = s_T$. Use _scipy.optimize.fmin_ in Python to find $p_0^\ast$ by minimizing $||F(p_0) - s_T||_2$. Plot the optimal control input and blimp trajectory and comment on the results.
