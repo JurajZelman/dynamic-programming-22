@@ -70,7 +70,7 @@ def main():
         plt.show()
 
 
-def f_tilde(t: float, state: np.ndarray, const: list[float]):
+def f_tilde(t: float, state: np.ndarray, const: list[float]) -> np.ndarray:
     """
     First-order differential equation describing the state and co-state of the
     blimp dynamics derived by the Potryagin's minimum principle.
@@ -111,7 +111,7 @@ def f_tilde(t: float, state: np.ndarray, const: list[float]):
     return np.concatenate((s_dot, p_dot))
 
 
-def F(p_0: np.ndarray, s_0: np.ndarray, T: float, const: list[float]):
+def F(p_0: np.ndarray, s_0: np.ndarray, T: float, const: list[float]) -> np.ndarray:
     """
     Simulate the blimp dynamics for a given time horizon and initial state.
 
